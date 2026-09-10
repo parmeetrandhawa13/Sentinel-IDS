@@ -1,0 +1,12 @@
+<svg width="120" height="120" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M20 2 L36 8 V19 C36 29 29 35.5 20 38 C11 35.5 4 29 4 19 V8 Z"
+        fill="url(#sentinelGrad)" stroke="#5eead4" stroke-width="1.1"/>
+  <path d="M14 19.5 L18 23.5 L26.5 14.5" stroke="#04121a" stroke-width="2.4"
+        stroke-linecap="round" stroke-linejoin="round"/>
+  <defs>
+    <linearGradient id="sentinelGrad" x1="4" y1="2" x2="36" y2="38" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#22d3ee"/>
+      <stop offset="1" stop-color="#0891b2"/>
+    </linearGradient>
+  </defs>
+</svg>
