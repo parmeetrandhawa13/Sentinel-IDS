@@ -67,16 +67,33 @@ def flow(items):
 def nav():
     with st.sidebar:
         st.markdown('<div class="brand" style="font-size:16px">🛡 <span>SENTINEL</span> IDS</div><div class="muted" style="margin:6px 0 20px">Network threat detection platform</div>',unsafe_allow_html=True)
-        page=st.radio('WORKSPACE',['Command Center','Traffic Analyzer','Incident Console','AI Explainability','Model Lab','Dataset Intelligence','Architecture'],label_visibility='visible')
+        page=st.radio('WORKSPACE',['Public Overview','Command Center','Traffic Analyzer','Incident Console','AI Explainability','Model Lab','Dataset Intelligence','Architecture'],label_visibility='visible')
         st.divider(); st.markdown('**ENGINE STATUS**')
         st.markdown('<span class="good">●</span> Model loaded<br><span class="good">●</span> Dataset loaded<br><span class="good">●</span> Prediction ready',unsafe_allow_html=True)
         st.divider(); st.caption(f'Last session check · {datetime.now().strftime("%H:%M:%S")}')
-        st.caption('Academic project • Safe demonstration environment')
+        st.caption('Public demo • No personal data required • Safe simulation environment')
     return page
 
 page=nav()
 
-if page=='Command Center':
+if page=='Public Overview':
+    hero('PUBLIC DEMO','Understand the threat before you fight it','Sentinel IDS is an educational ML security analytics platform. Explore how network traffic features move through a Random Forest classifier and become an interpretable threat decision.')
+    st.markdown('''<div class="card"><div class="section">What you can do here</div><div class="flow"><div class="step"><b>01</b><span>Analyze traffic</span></div><div class="arrow">→</div><div class="step"><b>02</b><span>See ML decision</span></div><div class="arrow">→</div><div class="step"><b>03</b><span>Understand why</span></div><div class="arrow">→</div><div class="step"><b>04</b><span>Review the event</span></div></div></div>''',unsafe_allow_html=True)
+    st.write('')
+    a,b,c=st.columns(3)
+    a.markdown(kpi('ML engine','Random Forest','ensemble classifier'),unsafe_allow_html=True)
+    b.markdown(kpi('Detection type','Traffic classification','feature-based analysis'),unsafe_allow_html=True)
+    c.markdown(kpi('Data policy','Demo data','no personal data needed'),unsafe_allow_html=True)
+    st.write('')
+    a,b=st.columns([1.15,.85])
+    with a:
+        card('How the decision happens','<div class="explain"><strong>1. Observe:</strong> traffic is represented by measurable features such as packets, bytes, ports and failed logins.<br><strong>2. Prepare:</strong> the values are encoded and arranged for the model.<br><strong>3. Predict:</strong> multiple decision trees vote on the traffic pattern.<br><strong>4. Explain:</strong> Sentinel reports the prediction confidence, risk level and supporting indicators.<br><br><strong>Try it:</strong> open <b>Traffic Analyzer</b> and load the normal or attack-like preset.</div>')
+    with b:
+        card('Important public-demo note','<div class="explain">This application is a safe educational demonstration. It does <strong>not</strong> capture packets, scan networks, block attackers, or claim real-world detection accuracy. The included dataset is synthetic. Use the project to understand the ML pipeline, not as a production security control.</div>')
+    st.write('')
+    card('Built to grow','<div class="explain">The current version provides feature-based detection, model evaluation, explainability and a local incident trail. A production evolution would add a real packet-feature ingestion layer, public benchmark datasets, persistent storage, authentication, monitoring and drift detection.</div>')
+
+elif page=='Command Center':
     hero('SECURITY OPERATIONS','See the network. Understand the threat.','Sentinel turns traffic features into an interpretable security decision using a trained Random Forest model.')
     total=len(data); attacks=int(data[TARGET_COLUMN].sum()); normal=total-attacks
     c=st.columns(4)
@@ -94,7 +111,7 @@ if page=='Command Center':
         fig.update_layout(height=300,paper_bgcolor='rgba(0,0,0,0)',font=dict(color='#cbd5e1'),margin=dict(l=0,r=0,t=25,b=0),showlegend=True)
         st.markdown('<div class="card"><div class="section">Dataset threat mix</div>',unsafe_allow_html=True); st.plotly_chart(fig,use_container_width=True,config={'displayModeBar':False}); st.markdown('</div>',unsafe_allow_html=True)
     st.write('')
-    card('Why this project matters','<div class="explain"><strong>IDS = an early-warning layer.</strong><br>Instead of manually inspecting thousands of connections, an ML model learns patterns from labeled examples and flags traffic that looks suspicious. Sentinel then exposes the evidence and confidence so a human can investigate.</div>')
+    card('Why this project matters','<div class="explain"><strong>IDS = an early-warning layer.</strong><br>Instead of manually inspecting thousands of connections, an ML model learns patterns from labeled examples and flags traffic that looks suspicious. Sentinel then exposes the evidence and confidence so a human can investigate.<br><br><strong>Public-demo scope:</strong> predictions are based on feature records supplied in the app; this is not live packet capture.</div>')
 
 elif page=='Traffic Analyzer':
     hero('INTERACTIVE DETECTION','Traffic Analyzer','Test a connection, watch the ML pipeline run, and inspect why the model produced its decision.')
@@ -162,7 +179,7 @@ elif page=='Model Lab':
     with a:
         cm=evaluation.confusion; fig=go.Figure(go.Heatmap(z=cm,x=['Predicted Normal','Predicted Intrusion'],y=['Actual Normal','Actual Intrusion'],text=cm,texttemplate='%{text}',colorscale=[[0,'#101827'],[1,'#22d3ee']],showscale=False)); fig.update_layout(height=320,paper_bgcolor='rgba(0,0,0,0)',font=dict(color='#cbd5e1'),margin=dict(l=10,r=10,t=30,b=10)); st.markdown('<div class="card"><div class="section">Confusion matrix</div>',unsafe_allow_html=True); st.plotly_chart(fig,use_container_width=True,config={'displayModeBar':False}); st.markdown('</div>',unsafe_allow_html=True)
     with b:
-        card('Configuration',f'<div class="explain"><strong>Trees:</strong> {meta["n_estimators"]}<br><strong>Max depth:</strong> {meta["max_depth"]}<br><strong>Criterion:</strong> {meta["criterion"]}<br><strong>Class weighting:</strong> {meta["class_weight"]}<br><strong>Test split used during training:</strong> 20%</div>')
+        card('Configuration',f'<div class="explain"><strong>Trees:</strong> {meta["n_estimators"]}<br><strong>Max depth:</strong> {meta["max_depth"]}<br><strong>Criterion:</strong> {meta["criterion"]}<br><strong>Class weighting:</strong> {meta["class_weight"]}<br><strong>Evaluation:</strong> stratified 80/20 hold-out split</div>')
     st.warning('Important: the included dataset is synthetic and these metrics are not evidence of real-world IDS performance. A stronger next version would train and validate on a public benchmark such as CIC-IDS2017 or UNSW-NB15.')
 
 elif page=='Dataset Intelligence':
